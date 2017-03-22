@@ -1,0 +1,47 @@
+
+html, body {
+	margin: 0;
+	padding: 0;
+	background-color: #000000;
+	height: 100%;
+}
+
+body {
+	font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.container {
+	position: relative;
+	background-color: rgb(187,173,160);
+	width: 440px;
+	height: 440px;
+}
+
+
+.square_base {
+	position: absolute;
+	margin: 5px;
+	width: 100px;
+	height: 100px;
+	transition: transform  0.1s ease-in;
+		
+}
+
+.square_empty {
+	z-index: 1;
+	
+
+}
+
+.square_tile {
+
+	text-align: center;
+	line-height: 100px;
+	color: white;
+	font-size: 50px;
+	font-weight: bold;
+	z-index: 10;
+}
