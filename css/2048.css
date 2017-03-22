@@ -9,6 +9,7 @@ html, body {
 body {
 	font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	justify-content: center;
 }
@@ -21,18 +22,23 @@ body {
 }
 
 
+.square_bk {
+	z-index: 2;
+	background-color: rgb(205, 193, 180);
+}
+
 .square_base {
 	position: absolute;
 	margin: 5px;
 	width: 100px;
 	height: 100px;
-	transition: transform  0.1s ease-in;
+	transition: transform  0.1s linear;
 		
 }
 
 .square_empty {
-	z-index: 1;
-	
+	z-index: -1;
+
 
 }
 
@@ -44,4 +50,37 @@ body {
 	font-size: 50px;
 	font-weight: bold;
 	z-index: 10;
+}
+
+.control_area {
+	height: 300px;
+	width: 400px;
+	background-color: navajowhite;
+}
+
+.up {
+	height: 100px;
+	background-color: ghostwhite;
+}
+
+.mid_container {
+	height: 100px;
+}
+
+.left {
+	display: inline-block;
+	height: 100px;
+	width: 50%;
+	background-color: lightcoral;
+}
+
+.right {
+	display: inline-block;
+	height: 100px;
+	width: 45%;
+}
+
+.down {
+	height: 100px;
+	background-color: gainsboro;
 }
