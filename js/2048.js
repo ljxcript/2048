@@ -48,7 +48,13 @@ window.onload = function () {
 	init_value2_sq(2);//游戏刚开始产生两个值为2的方块
 	
 	init_event_attachment();//初始化事件绑定
+	
+	
+	init_mobile_event();
 }
+
+
+
 
 
 
@@ -118,7 +124,7 @@ function random_square (value) {
 	//随机在empty的方块上产生一个“value(2,4,8...)”方块
 	var r = Math.floor(Math.random()*4), c = Math.floor(Math.random()*4);
 	while (squareContainer[r][c].value !== 0) {
-		if (isFailed()) {return;}
+		if (isFailed()) {alert('你输了！');return;}
 		r = Math.floor(Math.random()*4);
 		c = Math.floor(Math.random()*4);
 	}
@@ -279,3 +285,144 @@ function isFailed () {
 		
 	});
 }
+
+function init_mobile_event () {
+	document.getElementsByClassName("up")[0].addEventListener("touchstart", upE);
+	document.getElementsByClassName("down")[0].addEventListener("touchstart", downE);
+	document.getElementsByClassName("left")[0].addEventListener("touchstart", leftE);
+	document.getElementsByClassName("right")[0].addEventListener("touchstart", rightE);
+
+}
+
+function downE () {
+			for (var i = 0; i < row; i++) {
+		for (var j = 0; j < column; j++) {
+						//这是按下下方向的处理过程，从最下一行到最上一行从左到右遍历方块
+					if (squareContainer[row - i - 1][j].value !== 0) {
+						var tempR = row - i - 1;
+						var toMerge = false;
+						while ( tempR + 1 < row && squareContainer[tempR + 1][j].value === 0) {
+							tempR++;
+						}
+					
+						if (tempR + 1 < row && squareContainer[tempR + 1][j].value === squareContainer[row - i - 1][j].value && !squareContainer[tempR + 1][j].isMerged) {
+							tempR++;
+							toMerge = true;
+						}
+						if (tempR !== row - i - 1) {
+							if (toMerge) {//这次移动是否发生了合并，如果发生了，更新数值之后再进行位置交换
+								squareContainer[row - i - 1][j].value *= 2; 
+								squareContainer[tempR][j].value = 0;
+								squareContainer[tempR][j].isMerged = true;
+							}
+							//可以移动，交换数据结构中方块的value
+							swapSquareData(row - i - 1, j, tempR, j);
+							//交换视图中的dom元素跟数据结构同步
+							swapSquareDom(row - i - 1, j, tempR, j);
+						}							
+					}
+				}}
+		setTimeout(random_square, 400, 2);
+	clearMergedFlags();
+}
+
+function rightE () {
+		for (var i = 0; i < row; i++) {
+		for (var j = 0; j < column; j++) {
+					//这是按下右方向的处理过程，从最右一列到最左一列从上到下遍历方块
+					if (squareContainer[j][column - i - 1].value !== 0) {
+						var tempC = column - i - 1;
+						var toMerge = false;
+						while ( tempC + 1 < column  && squareContainer[j][tempC+1].value === 0) {
+							tempC++;
+						}
+					
+						if (tempC + 1 < column && squareContainer[j][tempC+1].value === squareContainer[j][column - i - 1].value && !squareContainer[j][tempC+1].isMerged) {
+							tempC++;
+							toMerge = true;
+						}
+						if (tempC !== column - i - 1) {
+							if (toMerge) {//这次移动是否发生了合并，如果发生了，更新数值之后再进行位置交换
+								squareContainer[j][column - i - 1].value *= 2; 
+								squareContainer[j][tempC].value = 0;
+								squareContainer[j][tempC].isMerged = true;
+							}
+							//可以移动，交换数据结构中方块的value
+							swapSquareData(j, column - i - 1, j, tempC);
+							//交换视图中的dom元素跟数据结构同步
+							swapSquareDom(j, column - i - 1, j, tempC);
+						}						
+					}
+				}}
+		setTimeout(random_square, 400, 2);
+	clearMergedFlags();
+}
+
+function leftE () {
+	
+	for (var i = 0; i < row; i++) {
+		for (var j = 0; j < column; j++) {
+						//这是按下左方向的处理过程，从最左一列到最右一列从上到下遍历方块
+					if (squareContainer[j][i].value !== 0) {
+						var tempC = i;
+						var toMerge = false;
+						while ( tempC - 1 >= 0 && squareContainer[j][tempC-1].value === 0) {
+							tempC--;
+						}
+					
+						if (tempC - 1 >= 0 && squareContainer[j][tempC-1].value === squareContainer[j][i].value && !squareContainer[j][tempC-1].isMerged) {
+							tempC--;
+							toMerge = true;
+						}
+						if (tempC !== i) {
+							if (toMerge) {//这次移动是否发生了合并，如果发生了，更新数值之后再进行位置交换
+								squareContainer[j][i].value *= 2; 
+								squareContainer[j][tempC].value = 0;
+								squareContainer[j][tempC].isMerged = true;
+							}
+							//可以移动，交换数据结构中方块的value
+							swapSquareData(j, i, j, tempC);
+							//交换视图中的dom元素跟数据结构同步
+							swapSquareDom(j, i, j, tempC);
+						}
+					}
+				}
+		}
+		setTimeout(random_square, 400, 2);
+	clearMergedFlags();
+}
+
+function upE () {
+		for (var i = 0; i < row; i++) {
+		for (var j = 0; j < column; j++) {
+						//这是按下上方向的处理过程，从最上一行到最下一行从左到右遍历方块
+					if (squareContainer[i][j].value !== 0) {
+						var tempR = i;
+						var toMerge = false;
+						while ( tempR - 1 >= 0 && squareContainer[tempR-1][j].value === 0) {
+							tempR--;
+						}
+					
+						if (tempR - 1 >= 0 && squareContainer[tempR - 1][j].value === squareContainer[i][j].value && !squareContainer[tempR - 1][j].isMerged) {
+							tempR--;
+							toMerge = true;
+						}
+						if (tempR !== i) {
+							if (toMerge) {//这次移动是否发生了合并，如果发生了，更新数值之后再进行位置交换
+								squareContainer[i][j].value *= 2; 
+								squareContainer[tempR][j].value = 0;
+								squareContainer[tempR][j].isMerged = true;
+							}
+							//可以移动，交换数据结构中方块的value
+							swapSquareData(i, j, tempR, j);
+							//交换视图中的dom元素跟数据结构同步
+							swapSquareDom(i, j, tempR, j);
+						}						
+					}
+									}
+		}
+		setTimeout(random_square, 400, 2);
+	clearMergedFlags();
+}
+
+
